@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 
 const drum = [
@@ -65,13 +65,15 @@ function DrumPad(props) {
   const num = Number(props.id)
 
   const playsound = (id) => {
-    document.getElementById(id).play()
+
+    document.getElementById(drum[id].letter).play()
+    document.getElementById("display").innerText = drum[id].name
   }
 
   useEffect(() => {
     function onKeyup(e) {
       if (e.keyCode === drum[num].keyCode) {
-        playsound(drum[num].letter)
+        playsound(num)
       }
     }
     window.addEventListener('keyup', onKeyup);
@@ -79,9 +81,11 @@ function DrumPad(props) {
   }, [num]);
 
   return (
-    <div className="col card p-0">
-      <button onClick={() => playsound(drum[num].letter)} className="drum-pad stretched-link btn btn-outline-primary" id={props.id}>{drum[num].letter} </button>
-      <audio className="clip" id={drum[num].letter} src={drum[num].url}> </audio>
+    <div className="card border-success col-sm-3 btn btn-outline-light p-0 bg-dark text-white m-1">
+      <div onClick={() => playsound(num)} className="drum-pad" id={props.id}>
+        {drum[num].letter}
+        <audio className="clip" id={drum[num].letter} src={drum[num].url}> </audio>
+      </div>
     </div>
   )
 
@@ -90,9 +94,10 @@ function DrumPad(props) {
 function App() {
 
   return (
-    <div id="drum-machine" className="container-fluid">
-      <div id="display">
-        <div className="row row-cols-3">
+    <div id="drum-machine" className="container-fluid bg-dark text-white text-center vh-100">
+      <div className="card bg-dark d-flex h-100">
+        <h1> Drum Machine</h1>
+        <div className="row justify-content-center align-self-center mt-5">
           <DrumPad id="0" />
           <DrumPad id="1" />
           <DrumPad id="2" />
@@ -102,6 +107,9 @@ function App() {
           <DrumPad id="6" />
           <DrumPad id="7" />
           <DrumPad id="8" />
+        </div>
+        <div className="row align-items-center mt-5">
+          <div className="col-sm-4 card p-0 bg-dark text-white m-1 border-success mx-auto" id="display"> </div>
         </div>
       </div>
     </div>
